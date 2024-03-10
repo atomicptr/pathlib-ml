@@ -52,7 +52,8 @@ let () =
   let test_dir_c = Pathlib.join test_dir_b "c" in
   assert (Pathlib.relative_to test_dir test_file_a = Pathlib.join "a" "test.txt");
   assert (Pathlib.relative_to test_dir_a test_file_b = Pathlib.join "b" "test.txt");
-  assert (Pathlib.relative_to test_dir_c test_file_a = Pathlib.join_list ".." [ ".."; "test.txt" ])
+  assert (Pathlib.relative_to test_dir_c test_file_a = Pathlib.join_list ".." [ ".."; "test.txt" ]);
+  Pathlib.rmdir test_dir
 
 let () =
   print_endline "test: Pathlib.walk";
@@ -62,7 +63,8 @@ let () =
       assert (Pathlib.basename filename = "test.txt");
       incr counter);
   (* there are 5x test.txt defined *)
-  assert (counter = ref 5)
+  assert (counter = ref 5);
+  Pathlib.rmdir test_dir
 
 let () =
   print_endline "test: Pathlib.write/read";
@@ -72,4 +74,5 @@ let () =
   Pathlib.write test_file "Hello, Camel!";
   assert (Pathlib.exists test_file);
   let text = Pathlib.read test_file in
-  assert (text = "Hello, Camel!")
+  assert (text = "Hello, Camel!");
+  Pathlib.rmdir test_dir

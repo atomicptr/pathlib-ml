@@ -136,3 +136,13 @@ let rec walk path func =
   |> Array.iter (fun p ->
          let p = join path p in
          if is_directory p then walk p func else func p)
+
+(** Remove a directory recursively *)
+let rec rmdir path =
+  Sys.readdir path
+  |> Array.iter (fun p ->
+         let p = join path p in
+         if is_directory p then (
+           rmdir p;
+           Sys.rmdir p)
+         else Unix.unlink p)
