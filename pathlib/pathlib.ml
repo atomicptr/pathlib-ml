@@ -91,12 +91,14 @@ let user_cache_dir app_name =
 (** Get the base temp directory *)
 let temp_dir_base () =
   match Os.current with
-  | Linux | OtherUnix -> (
+  | Linux | MacOS | OtherUnix -> (
       match Sys.getenv_opt "TMPDIR" with
       | Some tmp_dir -> Ok tmp_dir
       | None -> Ok "/tmp")
-  | MacOS -> failwith "Not yet implemented."
-  | Windows -> failwith "Not yet implemented."
+  | Windows -> (
+      match Sys.getenv_opt "TEMP" with
+      | Some tmp_dir -> Ok tmp_dir
+      | None -> Error "TEMP environment variable is not set.")
   | _ -> Error "Can't determine temp directory for unknown operating system."
 
 (** Get a temp directory for your app name *)
