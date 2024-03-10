@@ -63,3 +63,13 @@ let () =
       incr counter);
   (* there are 5x test.txt defined *)
   assert (counter = ref 5)
+
+let () =
+  print_endline "test: Pathlib.write/read";
+  let test_dir = make_test_dir_structure () in
+  let test_file = Pathlib.join test_dir "desert.txt" in
+  assert (Bool.not (Pathlib.exists test_file));
+  Pathlib.write test_file "Hello, Camel!";
+  assert (Pathlib.exists test_file);
+  let text = Pathlib.read test_file in
+  assert (text = "Hello, Camel!")
