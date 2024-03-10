@@ -1,6 +1,6 @@
 # pathlib-ml
 
-The ultimate cross platform path library for OCaml!
+Experimental path library for OCaml inspired by Pythons pathlib.
 
 ## Motivation
 

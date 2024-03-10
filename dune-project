@@ -17,6 +17,8 @@
 
 (package
  (name pathlib)
- (synopsis "The ultimate cross platform path library for OCaml!")
- (description "The ultimate cross platform path library for OCaml!")
+ (synopsis
+  "Experimental path library for OCaml inspired by Pythons pathlib.")
+ (description
+  "Experimental path library for OCaml inspired by Pythons pathlib.")
  (depends ocaml dune))
