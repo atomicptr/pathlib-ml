@@ -22,6 +22,15 @@ let is_file path = Sys.is_regular_file path
 (** Get the basename of a path: ./test/filename.txt will return filename.txt *)
 let basename path = Filename.basename path
 
+(** Get the parent of the path *)
+let parent path = Filename.dirname path
+
+(** A list giving access to the path's various components *)
+let parts path = List.filter (fun seg -> String.length seg > 0) (String.split_on_char Filename.dir_sep.[0] path)
+
+(** The file extension of the final component *)
+let suffix path = Filename.extension path
+
 (** Create directory recursively *)
 let rec mkdir path =
   if Sys.file_exists path then ()
@@ -38,9 +47,9 @@ let write file text =
 (** Read text from file *)
 let read file =
   let in_channel = open_in_bin file in
-  let s = really_input_string in_channel (in_channel_length in_channel) in
+  let str = really_input_string in_channel (in_channel_length in_channel) in
   close_in in_channel;
-  s
+  str
 
 (** Write an empty file to path *)
 let touch file = if exists file then read file |> write file else write file ""

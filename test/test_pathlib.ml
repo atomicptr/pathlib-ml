@@ -12,6 +12,12 @@ let make_test_dir_structure () =
   Pathlib.touch (Pathlib.join_list test_dir [ "a"; "b"; "c"; "d"; "e"; "test.txt" ]);
   test_dir
 
+let rec compare_list lst1 lst2 =
+  if List.length lst1 <> List.length lst2 then false (* lists have differen length, cant be equal *)
+  else if List.length lst1 = 0 && List.length lst2 = 0 then true (* both lists are empty? Thats equal *)
+  else if List.hd lst1 = List.hd lst2 then compare_list (List.tl lst1) (List.tl lst2)
+  else false
+
 let () =
   print_endline "test: Pathlib.cwd";
   let cwd = Pathlib.cwd () in
@@ -20,6 +26,13 @@ let () =
 let () =
   print_endline "test: Pathlib.join_list";
   assert (Pathlib.join_list "test" [ "a"; "b" ] = Pathlib.join (Pathlib.join "test" "a") "b")
+
+let () =
+  print_endline "test: Pathlib.parts";
+  assert (
+    compare_list
+      (Pathlib.parts "/home/christopher/ocaml/pathlib-ml/main.ocaml")
+      [ "home"; "christopher"; "ocaml"; "pathlib-ml"; "main.ocaml" ])
 
 let () =
   print_endline "test: Pathlib.home_dir returns Ok";
