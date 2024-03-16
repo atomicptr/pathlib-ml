@@ -35,6 +35,18 @@ let () =
       [ "home"; "christopher"; "ocaml"; "pathlib-ml"; "main.ocaml" ])
 
 let () =
+  print_endline "test: Pathlib.suffixes";
+  assert (compare_list (Pathlib.suffixes "/etc/nginx/something") []);
+  assert (compare_list (Pathlib.suffixes "test.txt") [ ".txt" ]);
+  assert (compare_list (Pathlib.suffixes "test.tar.gz") [ ".tar"; ".gz" ])
+
+let () =
+  print_endline "test: Pathlib.stem";
+  assert (Pathlib.stem "test.txt" = "test");
+  assert (Pathlib.stem "test.tar.gz" = "test");
+  assert (Pathlib.stem "/etc/nginx/something.config" = "something")
+
+let () =
   print_endline "test: Pathlib.home_dir returns Ok";
   let homedir = Pathlib.home_dir () in
   assert (Result.is_ok homedir);

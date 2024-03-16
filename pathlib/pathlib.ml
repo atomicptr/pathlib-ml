@@ -31,6 +31,12 @@ let parts path = List.filter (fun seg -> String.length seg > 0) (String.split_on
 (** The file extension of the final component *)
 let suffix path = Filename.extension path
 
+(** A list of the path’s file extensions *)
+let suffixes path = List.tl (List.map (fun ext -> "." ^ ext) (String.split_on_char '.' (Filename.basename path)))
+
+(** The final path component, without its suffix *)
+let stem path = Filename.basename path |> String.split_on_char '.' |> List.hd
+
 (** Create directory recursively *)
 let rec mkdir path =
   if Sys.file_exists path then ()
@@ -157,3 +163,6 @@ let rec rmdir path =
            rmdir p;
            Sys.rmdir p)
          else Unix.unlink p)
+
+(** Rename this file or directory to the given target *)
+let rename path new_path = Sys.rename path new_path
