@@ -13,6 +13,12 @@ let exists path = Sys.file_exists path
 (** Make the path absolute, if its relative prefix it with the current working directory *)
 let absolute path = if Filename.is_relative path then join (cwd ()) path else path
 
+(** Return whether the path is relative or not. *)
+let is_relative path = Filename.is_relative path
+
+(** Return whether the path is absolute or not. *)
+let is_absolute path = Bool.not @@ is_relative path
+
 (** Is the path a directory? *)
 let is_directory path = Sys.is_directory path
 
