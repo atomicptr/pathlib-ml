@@ -21,4 +21,4 @@
   "Experimental path library for OCaml inspired by Pythons pathlib.")
  (description
   "Experimental path library for OCaml inspired by Pythons pathlib.")
- (depends ocaml dune))
+ (depends ocaml dune dune-glob))

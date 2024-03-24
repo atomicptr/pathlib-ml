@@ -187,3 +187,12 @@ let with_stem path new_stem = with_name path (new_stem ^ String.concat "" (suffi
 
 (** Return a new suffix with the stem changed. *)
 let with_suffix path new_suffix = with_name path (stem path ^ Utils.prefix_string new_suffix ".")
+
+(** Match this path against the provided glob-style pattern. *)
+let match_pattern path pattern = Dune_glob.V1.test (Dune_glob.V1.of_string pattern) path
+
+(** Glob the given relative pattern in the directory represented by this path. *)
+let glob path pattern =
+  let files = ref [] in
+  walk path (fun p -> if match_pattern p pattern then files := p :: !files);
+  !files

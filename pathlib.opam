@@ -12,6 +12,7 @@ bug-reports: "https://github.com/atomicptr/pathlib-ml/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.14"}
+  "dune-glob"
   "odoc" {with-doc}
 ]
 build: [

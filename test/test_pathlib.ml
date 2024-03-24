@@ -10,6 +10,10 @@ let make_test_dir_structure () =
   Pathlib.touch (Pathlib.join_list test_dir [ "a"; "b"; "c"; "test.txt" ]);
   Pathlib.touch (Pathlib.join_list test_dir [ "a"; "b"; "c"; "d"; "test.txt" ]);
   Pathlib.touch (Pathlib.join_list test_dir [ "a"; "b"; "c"; "d"; "e"; "test.txt" ]);
+  Pathlib.mkdir (Pathlib.join_list test_dir [ "test"; "src"; "sub" ]);
+  Pathlib.touch (Pathlib.join_list test_dir [ "test"; "src"; "a.ml" ]);
+  Pathlib.touch (Pathlib.join_list test_dir [ "test"; "src"; "b.ml" ]);
+  Pathlib.touch (Pathlib.join_list test_dir [ "test"; "src"; "sub"; "c.ml" ]);
   test_dir
 
 let rec compare_list lst1 lst2 =
@@ -123,3 +127,19 @@ let () =
   print_endline "test: Pathlib.with_suffix";
   assert (Pathlib.with_suffix "/usr/local/config.ini" ".ml" = "/usr/local/config.ml");
   assert (Pathlib.with_suffix "/usr/local/config.ini" "ml" = "/usr/local/config.ml")
+
+let () =
+  print_endline "test: Pathlib.match_pattern";
+  assert (Pathlib.match_pattern "test.ml" "*.ml");
+  assert (Pathlib.match_pattern "/a/b.ml" "**.ml");
+  assert (Pathlib.match_pattern "/a/b/c.ml" "**/b/*.ml");
+  assert (Bool.not @@ Pathlib.match_pattern "/a/b/c.ml" "a/*.ml");
+  (* This should pass: assert (Pathlib.match_pattern "/a.ml" "'/*.ml"); *)
+  assert (Bool.not @@ Pathlib.match_pattern "a/b.py" "/*.py")
+
+let () =
+  print_endline "test: Pathlib.glob";
+  let test_dir = make_test_dir_structure () in
+  assert (List.length (Pathlib.glob test_dir "**.ml") = 3);
+  assert (List.length (Pathlib.glob test_dir "**/e/test.txt") = 1);
+  Pathlib.rmdir test_dir
