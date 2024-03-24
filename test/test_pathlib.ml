@@ -47,6 +47,15 @@ let () =
   assert (Pathlib.stem "/etc/nginx/something.config" = "something")
 
 let () =
+  print_endline "test: Pathlib.posix_path";
+  assert (
+    Pathlib.posix_path "C:\\\\Users\\OcamlUser\\Projects\\pathlib-ml\\pathlib\\pathlib.ml"
+    = "C:/Users/OcamlUser/Projects/pathlib-ml/pathlib/pathlib.ml");
+  assert (
+    Pathlib.posix_path "/home/ocamluser/projects/pathlib-ml/pathlib/pathlib.ml"
+    = "/home/ocamluser/projects/pathlib-ml/pathlib/pathlib.ml")
+
+let () =
   print_endline "test: Pathlib.home_dir returns Ok";
   let homedir = Pathlib.home_dir () in
   assert (Result.is_ok homedir);
@@ -101,3 +110,16 @@ let () =
   let text = Pathlib.read test_file in
   assert (text = "Hello, Camel!");
   Pathlib.rmdir test_dir
+
+let () =
+  print_endline "test: Pathlib.with_name";
+  assert (Pathlib.with_name "/usr/local/config.ini" "ocaml.ini" = "/usr/local/ocaml.ini")
+
+let () =
+  print_endline "test: Pathlib.with_stem";
+  assert (Pathlib.with_stem "/usr/local/config.ini" "ocaml" = "/usr/local/ocaml.ini")
+
+let () =
+  print_endline "test: Pathlib.with_suffix";
+  assert (Pathlib.with_suffix "/usr/local/config.ini" ".ml" = "/usr/local/config.ml");
+  assert (Pathlib.with_suffix "/usr/local/config.ini" "ml" = "/usr/local/config.ml")

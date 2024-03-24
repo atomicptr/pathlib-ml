@@ -1,4 +1,4 @@
 (library
  (public_name pathlib)
  (name pathlib)
- (libraries unix))
+ (libraries unix str))

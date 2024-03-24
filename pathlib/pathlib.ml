@@ -43,6 +43,9 @@ let suffixes path = List.tl (List.map (fun ext -> "." ^ ext) (String.split_on_ch
 (** The final path component, without its suffix *)
 let stem path = Filename.basename path |> String.split_on_char '.' |> List.hd
 
+(** Return a string representation of the path with forward slashes *)
+let posix_path path = Str.global_replace (Str.regexp "\\\\\\\\") "/" path |> Str.global_replace (Str.regexp "\\") "/"
+
 (** Create directory recursively *)
 let rec mkdir path =
   if Sys.file_exists path then ()
@@ -172,3 +175,15 @@ let rec rmdir path =
 
 (** Rename this file or directory to the given target *)
 let rename path new_path = Sys.rename path new_path
+
+(** Return a new path with the name changed. *)
+let with_name path new_name =
+  Utils.prefix_string
+    (String.concat Filename.dir_sep @@ (parts path |> List.rev |> List.tl |> List.rev) @ [ new_name ])
+    "/"
+
+(** Return a new stem with the stem changed. *)
+let with_stem path new_stem = with_name path (new_stem ^ String.concat "" (suffixes path))
+
+(** Return a new suffix with the stem changed. *)
+let with_suffix path new_suffix = with_name path (stem path ^ Utils.prefix_string new_suffix ".")
