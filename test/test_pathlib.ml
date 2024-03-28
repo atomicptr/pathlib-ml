@@ -130,11 +130,10 @@ let () =
           test_case "writing file means file exists" `Quick (fun () ->
               let test_dir = make_test_dir_structure () in
               let test_file = Pathlib.join test_dir "desert.txt" in
-              assert (Bool.not (Pathlib.exists test_file));
+              (check bool) "does not exist" false (Pathlib.exists test_file);
               Pathlib.write_text test_file "Hello, Camel!";
-              let result = Pathlib.exists test_file in
-              Pathlib.rmdir test_dir;
-              (check bool) "exists" true result);
+              (check bool) "exists" true (Pathlib.exists test_file);
+              Pathlib.rmdir test_dir);
         ] );
       ( "Pathlib.read_text",
         [
@@ -142,9 +141,8 @@ let () =
               let test_dir = make_test_dir_structure () in
               let test_file = Pathlib.join test_dir "desert.txt" in
               Pathlib.write_text test_file "Hello, Camel!";
-              let result = Pathlib.read_text test_file in
-              Pathlib.rmdir test_dir;
-              (check string) "equals" "Hello, Camel!" result);
+              (check string) "equals" "Hello, Camel!" (Pathlib.read_text test_file);
+              Pathlib.rmdir test_dir);
         ] );
       ( "Pathlib.with_name",
         [
@@ -184,14 +182,12 @@ let () =
         [
           test_case "test directory has 3x ml files with pattern **.ml" `Quick (fun () ->
               let test_dir = make_test_dir_structure () in
-              let result = List.length (Pathlib.glob test_dir "**.ml") in
-              Pathlib.rmdir test_dir;
-              (check int) "equals" 3 result);
+              (check int) "equals" 3 (List.length (Pathlib.glob test_dir "**.ml"));
+              Pathlib.rmdir test_dir);
           test_case "test directory has 1x txt file with pattern **/e/test.txt" `Quick (fun () ->
               let test_dir = make_test_dir_structure () in
-              let result = List.length (Pathlib.glob test_dir "**/e/test.txt") in
-              Pathlib.rmdir test_dir;
-              (check int) "equals" 1 result);
+              (check int) "equals" 1 (List.length (Pathlib.glob test_dir "**/e/test.txt"));
+              Pathlib.rmdir test_dir);
         ] );
       ( "Pathlib.is_relative_to",
         [
