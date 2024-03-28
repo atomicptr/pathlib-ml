@@ -10,9 +10,10 @@ homepage: "https://github.com/atomicptr/pathlib-ml"
 doc: "https://github.com/atomicptr/pathlib-ml"
 bug-reports: "https://github.com/atomicptr/pathlib-ml/issues"
 depends: [
-  "ocaml"
+  "ocaml" {>= "5.0"}
   "dune" {>= "3.14"}
   "dune-glob"
+  "alcotest" {dev}
   "odoc" {with-doc}
 ]
 build: [
