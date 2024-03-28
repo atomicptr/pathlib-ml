@@ -105,13 +105,13 @@ let () =
   Pathlib.rmdir test_dir
 
 let () =
-  print_endline "test: Pathlib.write/read";
+  print_endline "test: Pathlib.write_text/read_text";
   let test_dir = make_test_dir_structure () in
   let test_file = Pathlib.join test_dir "desert.txt" in
   assert (Bool.not (Pathlib.exists test_file));
-  Pathlib.write test_file "Hello, Camel!";
+  Pathlib.write_text test_file "Hello, Camel!";
   assert (Pathlib.exists test_file);
-  let text = Pathlib.read test_file in
+  let text = Pathlib.read_text test_file in
   assert (text = "Hello, Camel!");
   Pathlib.rmdir test_dir
 
@@ -143,3 +143,8 @@ let () =
   assert (List.length (Pathlib.glob test_dir "**.ml") = 3);
   assert (List.length (Pathlib.glob test_dir "**/e/test.txt") = 1);
   Pathlib.rmdir test_dir
+
+let () =
+  print_endline "test: Pathlib.is_relative_to";
+  assert (Pathlib.is_relative_to "/etc/passwd" "/etc");
+  assert (Bool.not @@ Pathlib.is_relative_to "/etc/passwd" "/usr")

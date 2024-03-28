@@ -54,20 +54,20 @@ let rec mkdir path =
     Sys.mkdir path 0o755)
 
 (** Write text to file *)
-let write file text =
+let write_text file text =
   let out_channel = open_out file in
   Printf.fprintf out_channel "%s" text;
   close_out out_channel
 
 (** Read text from file *)
-let read file =
+let read_text file =
   let in_channel = open_in_bin file in
   let str = really_input_string in_channel (in_channel_length in_channel) in
   close_in in_channel;
   str
 
 (** Write an empty file to path *)
-let touch file = if exists file then read file |> write file else write file ""
+let touch file = if exists file then read_text file |> write_text file else write_text file ""
 
 (** Return a new path object representing the user’s home directory *)
 let home_dir () =
@@ -196,3 +196,10 @@ let glob path pattern =
   let files = ref [] in
   walk path (fun p -> if match_pattern p pattern then files := p :: !files);
   !files
+
+(** Return whether the path is relative to the given base path. *)
+let is_relative_to path other =
+  let path = absolute path in
+  let other = absolute other in
+  let prefix_length = String.length other in
+  String.sub path 0 prefix_length = other
